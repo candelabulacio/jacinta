@@ -2,9 +2,13 @@
   "use strict";
 
   const CLAVE = "jacinta-carrito";
+  const CLAVE_ENVIO = "jacinta-envio";
   const tonos = ["kraft", "salvia", "oliva", "arena"];
+  const ENVIOS = CONFIG.envios || [];
   let filtro = "todo";
-  let carrito = leerCarrito();
+  let carrito = leer(CLAVE, {});
+  let envioId = leer(CLAVE_ENVIO, ENVIOS[0] ? ENVIOS[0].id : null);
+  if (!ENVIOS.some((e) => e.id === envioId)) envioId = ENVIOS[0] ? ENVIOS[0].id : null;
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -17,27 +21,40 @@
   const toast = $("[data-toast]");
 
   // ---------- Utilidades ----------
-  function leerCarrito() {
+  function leer(clave, porDefecto) {
     try {
-      return JSON.parse(localStorage.getItem(CLAVE)) || {};
+      const v = JSON.parse(localStorage.getItem(clave));
+      return v === null ? porDefecto : v;
     } catch (e) {
-      return {};
+      return porDefecto;
     }
   }
-  function guardarCarrito() {
+  function guardar(clave, valor) {
     try {
-      localStorage.setItem(CLAVE, JSON.stringify(carrito));
-    } catch (e) { /* sin almacenamiento: el carrito vive en memoria */ }
+      localStorage.setItem(clave, JSON.stringify(valor));
+    } catch (e) { /* sin almacenamiento: vive en memoria */ }
+  }
+  function tienePrecio(n) {
+    return typeof n === "number" && !isNaN(n);
+  }
+  function plata(n) {
+    return new Intl.NumberFormat("es-AR", { style: "currency", currency: CONFIG.moneda, maximumFractionDigits: 0 }).format(n);
   }
   function precio(n) {
-    if (n === null || n === undefined) return "Precio a confirmar";
-    return new Intl.NumberFormat("es-AR", { style: "currency", currency: CONFIG.moneda, maximumFractionDigits: 0 }).format(n);
+    return tienePrecio(n) ? plata(n) : "Precio a confirmar";
   }
   function producto(id) {
     return PRODUCTOS.find((p) => p.id === id);
   }
+  function envioElegido() {
+    return ENVIOS.find((e) => e.id === envioId) || null;
+  }
   function linkWhatsApp(texto) {
     return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto);
+  }
+  function abrirAfuera(a) {
+    a.target = "_blank";
+    a.rel = "noopener";
   }
   function el(tag, clase, texto) {
     const n = document.createElement(tag);
@@ -108,39 +125,121 @@
       b.type = "button";
       b.addEventListener("click", () => agregar(p.id));
 
-      li.append(foto, etiqueta, b);
+      const consulta = el("a", "tarjeta__consulta", "Consultar por WhatsApp");
+      consulta.href = linkWhatsApp("¡Hola Jacinta! Quiero consultar por: " + p.nombre);
+      consulta.setAttribute("aria-label", "Consultar por WhatsApp: " + p.nombre);
+      abrirAfuera(consulta);
+
+      li.append(foto, etiqueta, b, consulta);
       grilla.appendChild(li);
+    });
+  }
+
+  // ---------- Envíos ----------
+  function textoCostoEnvio(e) {
+    if (!e) return "—";
+    if (e.precio === 0) return "Sin cargo";
+    return tienePrecio(e.precio) ? plata(e.precio) : "A coordinar";
+  }
+  function pintarSeccionEnvios() {
+    const lista = $("[data-envios]");
+    if (!lista) return;
+    lista.innerHTML = "";
+    ENVIOS.forEach((e, i) => {
+      const li = el("li", "envio");
+      li.appendChild(ilustracion(i % 2 ? "flor" : "sprig"));
+      li.appendChild(el("h3", "envio__nombre", e.nombre));
+      li.appendChild(el("p", "envio__detalle", e.detalle));
+      li.appendChild(el("span", "envio__precio", textoCostoEnvio(e)));
+      lista.appendChild(li);
+    });
+    const gratis = $("[data-envio-gratis]");
+    if (gratis && tienePrecio(CONFIG.envioGratisDesde)) {
+      gratis.textContent = "Envío gratis en compras desde " + plata(CONFIG.envioGratisDesde) + ".";
+      gratis.hidden = false;
+    }
+  }
+  function pintarOpcionesEnvio() {
+    const caja = $("[data-envio-opciones]");
+    caja.innerHTML = "";
+    ENVIOS.forEach((e) => {
+      const label = el("label", "opcion");
+      const input = el("input");
+      input.type = "radio";
+      input.name = "envio";
+      input.value = e.id;
+      input.checked = e.id === envioId;
+      input.addEventListener("change", () => {
+        envioId = e.id;
+        guardar(CLAVE_ENVIO, envioId);
+        pintarCarrito();
+      });
+      const texto = el("span", "opcion__texto");
+      texto.appendChild(el("span", "opcion__nombre", e.nombre));
+      texto.appendChild(el("span", "opcion__costo", textoCostoEnvio(e)));
+      label.append(input, texto);
+      caja.appendChild(label);
     });
   }
 
   // ---------- Carrito ----------
   function agregar(id) {
     carrito[id] = (carrito[id] || 0) + 1;
-    guardarCarrito();
+    guardar(CLAVE, carrito);
     pintarCarrito();
     avisar(producto(id).nombre + " se agregó al carrito");
   }
   function cambiar(id, delta) {
     carrito[id] = (carrito[id] || 0) + delta;
     if (carrito[id] <= 0) delete carrito[id];
-    guardarCarrito();
+    guardar(CLAVE, carrito);
     pintarCarrito();
+  }
+  function calcular() {
+    const ids = Object.keys(carrito).filter((id) => producto(id));
+    let cantidad = 0;
+    let subtotal = 0;
+    let faltanPrecios = false;
+    ids.forEach((id) => {
+      const p = producto(id);
+      cantidad += carrito[id];
+      if (tienePrecio(p.precio)) subtotal += p.precio * carrito[id];
+      else faltanPrecios = true;
+    });
+
+    const e = envioElegido();
+    let envio = null; // null = a coordinar
+    let envioTexto = textoCostoEnvio(e);
+    if (e) {
+      const umbral = CONFIG.envioGratisDesde;
+      const aplicaGratis = e.precio !== 0 && tienePrecio(umbral) && !faltanPrecios && subtotal >= umbral;
+      if (aplicaGratis) {
+        envio = 0;
+        envioTexto = "Gratis";
+      } else if (tienePrecio(e.precio)) {
+        envio = e.precio;
+      }
+    } else {
+      envio = 0;
+    }
+
+    let totalTexto;
+    if (!ids.length) totalTexto = plata(0);
+    else if (faltanPrecios && !subtotal) totalTexto = "A confirmar";
+    else {
+      const parcial = plata(subtotal + (envio || 0));
+      totalTexto = faltanPrecios || envio === null ? parcial + " + a confirmar" : parcial;
+    }
+    return { ids, cantidad, subtotal, faltanPrecios, envioTexto, totalTexto, e };
   }
   function pintarCarrito() {
     const lista = $("[data-lista]");
     lista.innerHTML = "";
-    const ids = Object.keys(carrito).filter((id) => producto(id));
-    let cantidad = 0;
-    let total = 0;
-    let faltanPrecios = false;
+    const r = calcular();
 
-    ids.forEach((id) => {
+    r.ids.forEach((id) => {
       const p = producto(id);
       const n = carrito[id];
-      cantidad += n;
-      if (p.precio === null || p.precio === undefined) faltanPrecios = true;
-      else total += p.precio * n;
-
       const li = el("li", "item");
       const info = el("div", "item__info");
       info.appendChild(el("span", "item__nombre", p.nombre));
@@ -162,19 +261,24 @@
       lista.appendChild(li);
     });
 
-    $$("[data-cuenta]").forEach((n) => (n.textContent = String(cantidad)));
-    $("[data-vacio]").hidden = ids.length > 0;
-    $("[data-total]").textContent = faltanPrecios ? (total ? precio(total) + " + a confirmar" : "A confirmar") : precio(total);
+    $$("[data-cuenta]").forEach((n) => (n.textContent = String(r.cantidad)));
+    $("[data-vacio]").hidden = r.ids.length > 0;
+    $("[data-subtotal]").textContent = r.faltanPrecios ? (r.subtotal ? plata(r.subtotal) + " + a confirmar" : "A confirmar") : plata(r.subtotal);
+    $("[data-costo-envio]").textContent = r.envioTexto;
+    $("[data-total]").textContent = r.totalTexto;
 
     const finalizar = $("[data-finalizar]");
-    if (ids.length) {
-      const lineas = ids.map((id) => "• " + carrito[id] + " x " + producto(id).nombre);
-      finalizar.href = linkWhatsApp("¡Hola Jacinta! Quiero hacer este pedido:\n" + lineas.join("\n"));
-      finalizar.target = "_blank";
-      finalizar.rel = "noopener";
+    if (r.ids.length) {
+      const lineas = r.ids.map((id) => "• " + carrito[id] + " x " + producto(id).nombre);
+      let msg = "¡Hola Jacinta! Quiero hacer este pedido:\n" + lineas.join("\n");
+      if (r.e) msg += "\n\nEnvío: " + r.e.nombre + " (" + r.envioTexto + ")";
+      msg += "\nTotal: " + r.totalTexto;
+      finalizar.href = linkWhatsApp(msg);
+      abrirAfuera(finalizar);
       finalizar.removeAttribute("aria-disabled");
     } else {
       finalizar.href = "#";
+      finalizar.removeAttribute("target");
       finalizar.setAttribute("aria-disabled", "true");
     }
   }
@@ -207,14 +311,15 @@
   );
   $$("[data-whatsapp-kit]").forEach((a) => {
     a.href = linkWhatsApp("¡Hola Jacinta! Quiero el " + a.getAttribute("data-whatsapp-kit") + ".");
-    a.target = "_blank";
-    a.rel = "noopener";
+    abrirAfuera(a);
   });
-  $$("[data-whatsapp-link]").forEach((a) => { a.href = linkWhatsApp("¡Hola Jacinta!"); a.target = "_blank"; a.rel = "noopener"; });
-  $$("[data-instagram-link]").forEach((a) => { a.href = CONFIG.instagram; a.target = "_blank"; a.rel = "noopener"; });
+  $$("[data-whatsapp-link]").forEach((a) => { a.href = linkWhatsApp("¡Hola Jacinta!"); abrirAfuera(a); });
+  $$("[data-instagram-link]").forEach((a) => { a.href = CONFIG.instagram; abrirAfuera(a); });
   $$("[data-anio]").forEach((n) => (n.textContent = String(new Date().getFullYear())));
 
   pintarFiltros();
   pintarGrilla();
+  pintarSeccionEnvios();
+  pintarOpcionesEnvio();
   pintarCarrito();
 })();
