@@ -62,6 +62,7 @@
         <a href="#catalogo" data-filtro="bijou">Bijou</a>
         <a href="#catalogo" data-filtro="playa">Playa</a>
         <a href="#regalos">Regalos</a>
+        <a href="#envios">Envíos</a>
       </nav>
       <button class="btn-carrito" type="button" aria-controls="carrito" aria-expanded="false">
         <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
@@ -100,8 +101,8 @@
     <!-- Beneficios -->
     <section class="beneficios" aria-label="Beneficios">
       <div class="contenedor beneficios__grilla">
-        <div class="beneficio"><span class="beneficio__titulo">Envíos</span><span>[Zonas y costo]</span></div>
-        <div class="beneficio"><span class="beneficio__titulo">Retiro sin cargo</span><span>[Punto de retiro]</span></div>
+        <div class="beneficio"><span class="beneficio__titulo">Envíos</span><span>Moto en AMBA y correo al interior</span></div>
+        <div class="beneficio"><span class="beneficio__titulo">Retiro sin cargo</span><span>En Pilar, coordinando por WhatsApp</span></div>
         <div class="beneficio"><span class="beneficio__titulo">Medios de pago</span><span>Mercado Pago y transferencia</span></div>
         <div class="beneficio"><span class="beneficio__titulo">Listo para regalar</span><span>Pedí tu packaging de regalo</span></div>
       </div>
@@ -169,6 +170,19 @@
       </div>
     </section>
 
+    <!-- Envíos -->
+    <section class="seccion seccion--envios" id="envios" aria-labelledby="titulo-envios">
+      <div class="contenedor">
+        <div class="seccion__cabecera seccion__cabecera--centro">
+          <svg class="divisor" aria-hidden="true"><use href="#flor"/></svg>
+          <h2 id="titulo-envios">Envíos y retiros</h2>
+          <p class="seccion__intro" data-envio-gratis hidden></p>
+        </div>
+        <ul class="envios" role="list" data-envios></ul>
+        <p class="envios__nota">¿Dudas con tu envío? <a href="#" data-whatsapp-link>Escribinos por WhatsApp</a> y lo coordinamos.</p>
+      </div>
+    </section>
+
     <!-- Sobre Jacinta -->
     <section class="seccion" aria-labelledby="titulo-sobre">
       <div class="contenedor sobre">
@@ -193,6 +207,7 @@
         <span class="footer__titulo">Tienda</span>
         <a href="#catalogo">Colección</a>
         <a href="#regalos">Regalos</a>
+        <a href="#envios">Envíos y retiros</a>
       </div>
       <div class="footer__col">
         <span class="footer__titulo">Contacto</span>
@@ -215,11 +230,21 @@
     <ul class="carrito__lista" role="list" data-lista></ul>
     <p class="carrito__vacio" data-vacio>Todavía no agregaste nada.</p>
     <div class="carrito__pie">
+      <fieldset class="carrito__envio">
+        <legend>Envío</legend>
+        <div class="carrito__opciones" data-envio-opciones></div>
+      </fieldset>
+      <div class="carrito__linea"><span>Subtotal</span><span data-subtotal>$0</span></div>
+      <div class="carrito__linea"><span>Envío</span><span data-costo-envio>—</span></div>
       <div class="carrito__total"><span>Total</span><strong data-total>$0</strong></div>
       <a class="btn btn--bosque btn--ancho" href="#" data-finalizar>Finalizar pedido por WhatsApp</a>
       <p class="carrito__nota">Te respondemos para coordinar pago y envío.</p>
     </div>
   </aside>
+
+  <a class="wa-flotante" href="#" data-whatsapp-link aria-label="Escribinos por WhatsApp">
+    <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2z"/></svg>
+  </a>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
 
