@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jacinta · Accesorios</title>
+  <meta name="description" content="Jacinta: accesorios con espíritu botánico. Bolsos, cinturones, bijou y piezas para el verano.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Ilustraciones botánicas reutilizables -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="sprig" viewBox="0 0 100 200">
+      <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M50 196 C49 150 51 100 50 22"/>
+        <path d="M50 164 C38 156 30 144 27 128 C40 134 48 146 50 164Z"/><path d="M50 164 C42 152 35 140 27 128"/>
+        <path d="M50 144 C62 136 70 124 73 108 C60 114 52 126 50 144Z"/><path d="M50 144 C58 132 65 120 73 108"/>
+        <path d="M50 120 C41 112 35 102 33 90 C43 95 49 106 50 120Z"/>
+        <path d="M50 100 C59 93 65 84 67 72 C58 77 52 87 50 100Z"/>
+        <ellipse cx="50" cy="18" rx="2.6" ry="6"/>
+        <ellipse cx="45" cy="30" rx="2.6" ry="6" transform="rotate(-28 45 30)"/>
+        <ellipse cx="55" cy="30" rx="2.6" ry="6" transform="rotate(28 55 30)"/>
+        <ellipse cx="44" cy="44" rx="2.6" ry="6" transform="rotate(-30 44 44)"/>
+        <ellipse cx="56" cy="44" rx="2.6" ry="6" transform="rotate(30 56 44)"/>
+        <ellipse cx="45" cy="58" rx="2.6" ry="6" transform="rotate(-32 45 58)"/>
+        <ellipse cx="55" cy="58" rx="2.6" ry="6" transform="rotate(32 55 58)"/>
+      </g>
+    </symbol>
+    <symbol id="flor" viewBox="0 0 100 100">
+      <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M50 50 C44 36 44 24 50 14 C56 24 56 36 50 50Z"/>
+        <path d="M50 50 C62 42 74 40 84 44 C78 54 64 56 50 50Z"/>
+        <path d="M50 50 C60 62 64 74 60 86 C50 80 46 64 50 50Z"/>
+        <path d="M50 50 C40 62 30 70 18 70 C22 58 36 50 50 50Z"/>
+        <path d="M50 50 C38 44 28 34 24 22 C36 24 46 36 50 50Z"/>
+        <circle cx="50" cy="50" r="3"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <a class="skip" href="#catalogo">Ir al catálogo</a>
+
+  <div class="aviso">Colección Verano · Envíos a [zonas de envío] · Pagá con Mercado Pago o transferencia</div>
+
+  <header class="header">
+    <div class="contenedor header__fila">
+      <a class="logo" href="#inicio" aria-label="Jacinta, inicio">
+        <svg class="logo__rama" aria-hidden="true"><use href="#sprig"/></svg>
+        <span class="logo__texto">
+          <span class="logo__nombre">Jacinta</span>
+          <span class="logo__bajada">accesorios</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="#catalogo" data-filtro="bolsos">Bolsos</a>
+        <a href="#catalogo" data-filtro="cinturones">Cinturones</a>
+        <a href="#catalogo" data-filtro="pelo">Pelo</a>
+        <a href="#catalogo" data-filtro="bijou">Bijou</a>
+        <a href="#catalogo" data-filtro="playa">Playa</a>
+        <a href="#regalos">Regalos</a>
+      </nav>
+      <button class="btn-carrito" type="button" aria-controls="carrito" aria-expanded="false">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span>Carrito</span>
+        <span class="btn-carrito__cuenta" data-cuenta>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- Portada -->
+    <section class="hero">
+      <div class="contenedor hero__fila">
+        <div class="hero__texto">
+          <p class="eyebrow eyebrow--claro">Colección Verano</p>
+          <h1>Accesorios con<br><em>alma de jardín</em></h1>
+          <p class="hero__bajada">Bolsos tejidos, cinturones, bijou y piezas para el sol. Elegidas una por una, con colores de la tierra y detalles hechos para durar.</p>
+          <div class="acciones">
+            <a class="btn btn--crema" href="#catalogo">Ver la colección</a>
+            <a class="btn btn--linea-clara" href="#regalos">Ideas para regalar</a>
+          </div>
+        </div>
+        <div class="hero__estampilla">
+          <div class="estampilla">
+            <div class="estampilla__interior">
+              <svg class="estampilla__rama" aria-hidden="true"><use href="#sprig"/></svg>
+              <span class="estampilla__marca">Jacinta</span>
+              <span class="estampilla__sub">accesorios · verano</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beneficios -->
+    <section class="beneficios" aria-label="Beneficios">
+      <div class="contenedor beneficios__grilla">
+        <div class="beneficio"><span class="beneficio__titulo">Envíos</span><span>[Zonas y costo]</span></div>
+        <div class="beneficio"><span class="beneficio__titulo">Retiro sin cargo</span><span>[Punto de retiro]</span></div>
+        <div class="beneficio"><span class="beneficio__titulo">Medios de pago</span><span>Mercado Pago y transferencia</span></div>
+        <div class="beneficio"><span class="beneficio__titulo">Listo para regalar</span><span>Pedí tu packaging de regalo</span></div>
+      </div>
+    </section>
+
+    <!-- Categorías -->
+    <section class="seccion" aria-labelledby="titulo-categorias">
+      <div class="contenedor">
+        <div class="seccion__cabecera seccion__cabecera--centro">
+          <svg class="divisor" aria-hidden="true"><use href="#flor"/></svg>
+          <h2 id="titulo-categorias">Comprá por categoría</h2>
+        </div>
+        <ul class="categorias" role="list">
+          <li><a class="categoria" href="#catalogo" data-filtro="bolsos"><span class="categoria__circulo categoria__circulo--kraft"><svg aria-hidden="true"><use href="#sprig"/></svg></span><span class="categoria__nombre">Bolsos</span></a></li>
+          <li><a class="categoria" href="#catalogo" data-filtro="cinturones"><span class="categoria__circulo categoria__circulo--salvia"><svg aria-hidden="true"><use href="#flor"/></svg></span><span class="categoria__nombre">Cinturones</span></a></li>
+          <li><a class="categoria" href="#catalogo" data-filtro="pelo"><span class="categoria__circulo categoria__circulo--oliva"><svg aria-hidden="true"><use href="#sprig"/></svg></span><span class="categoria__nombre">Pelo</span></a></li>
+          <li><a class="categoria" href="#catalogo" data-filtro="bijou"><span class="categoria__circulo categoria__circulo--arena"><svg aria-hidden="true"><use href="#flor"/></svg></span><span class="categoria__nombre">Bijou</span></a></li>
+          <li><a class="categoria" href="#catalogo" data-filtro="playa"><span class="categoria__circulo categoria__circulo--kraft"><svg aria-hidden="true"><use href="#sprig"/></svg></span><span class="categoria__nombre">Playa</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Catálogo -->
+    <section class="seccion seccion--catalogo" id="catalogo" aria-labelledby="titulo-catalogo">
+      <div class="contenedor">
+        <div class="seccion__cabecera">
+          <div>
+            <p class="eyebrow">Novedades</p>
+            <h2 id="titulo-catalogo">La colección</h2>
+          </div>
+          <div class="filtros" role="group" aria-label="Filtrar por categoría" data-filtros></div>
+        </div>
+        <ul class="grilla" role="list" data-grilla></ul>
+      </div>
+    </section>
+
+    <!-- Regalos -->
+    <section class="regalos" id="regalos" aria-labelledby="titulo-regalos">
+      <div class="contenedor regalos__fila">
+        <div class="regalos__texto">
+          <p class="eyebrow eyebrow--claro">Para regalar</p>
+          <h2 id="titulo-regalos">Kits listos,<br><em>envueltos con cariño</em></h2>
+          <p>Combinamos piezas que van juntas y te las mandamos listas para Navidad, amigo invisible o para llevar en la valija.</p>
+        </div>
+        <ul class="kits" role="list">
+          <li class="estampilla estampilla--kit">
+            <div class="estampilla__interior kit">
+              <svg class="kit__rama" aria-hidden="true"><use href="#sprig"/></svg>
+              <h3>Kit Playa</h3>
+              <p>Bolso de rafia, toalla turca y visera</p>
+              <span class="kit__precio">[Precio kit]</span>
+              <a class="btn btn--bosque btn--chico" data-whatsapp-kit="Kit Playa" href="#">Pedir por WhatsApp</a>
+            </div>
+          </li>
+          <li class="estampilla estampilla--kit">
+            <div class="estampilla__interior kit">
+              <svg class="kit__rama" aria-hidden="true"><use href="#flor"/></svg>
+              <h3>Kit Jardín</h3>
+              <p>Pañuelo, set de clips y aros dorados</p>
+              <span class="kit__precio">[Precio kit]</span>
+              <a class="btn btn--bosque btn--chico" data-whatsapp-kit="Kit Jardín" href="#">Pedir por WhatsApp</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Sobre Jacinta -->
+    <section class="seccion" aria-labelledby="titulo-sobre">
+      <div class="contenedor sobre">
+        <svg class="sobre__rama" aria-hidden="true"><use href="#sprig"/></svg>
+        <div>
+          <p class="eyebrow">Sobre Jacinta</p>
+          <h2 id="titulo-sobre">Pocas piezas, bien elegidas</h2>
+          <p>[Contá en dos o tres líneas quién está detrás de Jacinta, de dónde viene el nombre y cómo elegís cada pieza.]</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="contenedor footer__fila">
+      <div class="footer__marca">
+        <span class="logo__nombre">Jacinta</span>
+        <p>Accesorios con espíritu botánico.</p>
+      </div>
+      <div class="footer__col">
+        <span class="footer__titulo">Tienda</span>
+        <a href="#catalogo">Colección</a>
+        <a href="#regalos">Regalos</a>
+      </div>
+      <div class="footer__col">
+        <span class="footer__titulo">Contacto</span>
+        <a href="#" data-whatsapp-link>WhatsApp</a>
+        <a href="#" data-instagram-link>Instagram</a>
+      </div>
+    </div>
+    <p class="footer__legal">© <span data-anio></span> Jacinta</p>
+  </footer>
+
+  <!-- Carrito -->
+  <div class="velo" data-velo hidden></div>
+  <aside class="carrito" id="carrito" aria-label="Carrito" aria-hidden="true">
+    <div class="carrito__cabecera">
+      <h2>Tu carrito</h2>
+      <button class="icono" type="button" data-cerrar aria-label="Cerrar carrito">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <ul class="carrito__lista" role="list" data-lista></ul>
+    <p class="carrito__vacio" data-vacio>Todavía no agregaste nada.</p>
+    <div class="carrito__pie">
+      <div class="carrito__total"><span>Total</span><strong data-total>$0</strong></div>
+      <a class="btn btn--bosque btn--ancho" href="#" data-finalizar>Finalizar pedido por WhatsApp</a>
+      <p class="carrito__nota">Te respondemos para coordinar pago y envío.</p>
+    </div>
+  </aside>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
